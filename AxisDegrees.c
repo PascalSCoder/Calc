@@ -6,7 +6,7 @@
 /*   By: pspijkst <pspijkst@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/01/25 10:38:39 by pspijkst      #+#    #+#                 */
-/*   Updated: 2021/01/25 12:32:11 by pspijkst      ########   odam.nl         */
+/*   Updated: 2021/01/25 12:36:47 by pspijkst      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,8 @@ int		main(void)
 	t_vector3	vect2;
 	t_vector3	vectres;
 
-	vect1 = v3_init(1, -2, 3);
-	vect2 = v3_init(4, -2, 3);
+	vect1 = v3_init(1, 1, 3);
+	vect2 = v3_init(1, 1, 4);
 	printf("Vect1 > vect2 angle: %f\n", v3_angle_v3(vect1, vect2));
 	printf("Vect1 local angle: %f\n", v3_angle(vect1));
 	printf("X<: %f\n", v3_angle_axis(vect1, axis_x));
