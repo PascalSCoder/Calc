@@ -6,7 +6,7 @@
 /*   By: pspijkst <pspijkst@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/01/25 10:38:39 by pspijkst      #+#    #+#                 */
-/*   Updated: 2021/01/25 12:36:47 by pspijkst      ########   odam.nl         */
+/*   Updated: 2021/01/26 11:24:11 by pspijkst      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,66 +28,110 @@ typedef struct	s_vector3
 	double	z;
 }				t_vector3;
 
-t_vector3	v3_abs(t_vector3 vector3)
+/*
+**	Returns an absolute duplicate of vect.
+*/
+t_vector3	v3_abs(t_vector3 vect)
 {
-	if (vector3.x < 0)
-		vector3.x *= -1;
-	if (vector3.y < 0)
-		vector3.y *= -1;
-	if (vector3.z < 0)
-		vector3.z *= -1;
-	return (vector3);
+	if (vect.x < 0)
+		vect.x *= -1;
+	if (vect.y < 0)
+		vect.y *= -1;
+	if (vect.z < 0)
+		vect.z *= -1;
+	return (vect);
 }
 
+/*
+**	Returns the scalar of vect. (i.e. coordinates combined)
+*/
 double	v3_scalar(t_vector3 vect)
 {
 	return (vect.x + vect.y + vect.z);
 }
 
-double	v3_magnitude(t_vector3 vector3)
+/*
+**	Returns the magnitude of vect.
+*/
+double	v3_magnitude(t_vector3 vect)
 {
-	vector3 = v3_abs(vector3);
-	return (sqrt(pow(vector3.x, 2) + pow(vector3.y, 2) + pow(vector3.z, 2)));
+	vect = v3_abs(vect);
+	return (sqrt(pow(vect.x, 2) + pow(vect.y, 2) + pow(vect.z, 2)));
 }
 
+/*
+**	Returns rad converted to degrees.
+*/
 double	rad_to_deg(double rad)
 {
 	return (rad * (180 / PI));
 }
 
-double	v3_angle_axis(t_vector3 vector3, t_axis axis)
+/*
+**	Returns the angle of a single axis of vect, compared to origin (0,0,0).
+*/
+double	v3_angle_axis(t_vector3 vect, t_axis axis)
 {
-	return (rad_to_deg(acos(((double*)&vector3)[axis] / v3_magnitude(vector3))));
+	return (rad_to_deg(acos(((double*)&vect)[axis] / v3_magnitude(vect))));
 }
 
+/*
+**	Returns the angle (degrees) of vect compared to origin (0,0,0).
+*/
 double	v3_angle(t_vector3 vect)
 {
 	return (rad_to_deg(acos(v3_scalar(vect) / v3_magnitude(vect))));
 }
 
-t_vector3	v3_multiply(t_vector3 vect1, t_vector3 vect2)
+/*
+**	Returns the scaled value (multiply a by b) of 2 vectors.
+*/
+t_vector3	v3_scale(t_vector3 vect_a, t_vector3 vect_b)
 {
-	vect1.x *= vect2.x;
-	vect1.y *= vect2.y;
-	vect1.z *= vect2.z;
-	return (vect1);
+	vect_a.x *= vect_b.x;
+	vect_a.y *= vect_b.y;
+	vect_a.z *= vect_b.z;
+	return (vect_a);
 }
 
-double	v3_angle_v3(t_vector3 vect1, t_vector3 vect2)
+/*
+**	Returns the dot product of 2 vectors.
+**	The dot product represents the angle between 2 vectors.
+**	arccos (scalar a x scalar b) / (magn a x magn b)
+*/
+double		v3_dot(t_vector3 vect_a, t_vector3 vect_b)
 {
 	double	scalarmult;
 	double	magnmult;
 
-	scalarmult = v3_scalar(v3_multiply(vect1, vect2));
-	magnmult = v3_magnitude(vect1) * v3_magnitude(vect2);
+	scalarmult = v3_scalar(v3_scale(vect_a, vect_b));
+	magnmult = v3_magnitude(vect_a) * v3_magnitude(vect_b);
 	return (rad_to_deg(acos(scalarmult / magnmult)));
 }
 
-void	printv3(t_vector3 vect)
+/*
+**	Returns a vector representing 3 angles, over x,y,z axis respectively.
+*/
+t_vector3	v3_angles_v3(t_vector3 vect_a, t_vector3 vect_b)
 {
-	printf("Vector3: %f, %f, %f\n", vect.x, vect.y, vect.z);
 }
 
+/*
+**	Returns the cross product of 2 vectors.
+*/
+t_vector3	v3_cross(t_vector3 vect_a, t_vector3 vect_b)
+{
+	t_vector3	cross;
+
+	cross.x = (vect_a.y * vect_b.z) - (vect_a.z * vect_b.y);
+	cross.y = -((vect_a.x * vect_b.z) - vect_a.z * vect_b.x);
+	cross.z = (vect_a.x * vect_b.y) - (vect_a.y * vect_b.x);
+	return (cross);
+}
+
+/*
+**	Returns a t_vector3 with doubles x, y, z values.
+*/
 t_vector3	v3_init(double x, double y, double z)
 {
 	t_vector3	vect;
@@ -98,19 +142,26 @@ t_vector3	v3_init(double x, double y, double z)
 	return (vect);
 }
 
+void	printv3(t_vector3 vect)
+{
+	printf("Vector3: %f, %f, %f\n", vect.x, vect.y, vect.z);
+}
+
 int		main(void)
 {
-	t_vector3	vect1;
-	t_vector3	vect2;
+	t_vector3	vect_a;
+	t_vector3	vect_b;
 	t_vector3	vectres;
 
-	vect1 = v3_init(1, 1, 3);
-	vect2 = v3_init(1, 1, 4);
-	printf("Vect1 > vect2 angle: %f\n", v3_angle_v3(vect1, vect2));
-	printf("Vect1 local angle: %f\n", v3_angle(vect1));
-	printf("X<: %f\n", v3_angle_axis(vect1, axis_x));
-	printf("Y<: %f\n", v3_angle_axis(vect1, axis_y));
-	printf("Z<: %f\n", v3_angle_axis(vect1, axis_z));
-	vectres = v3_multiply(vect1, vect2);
+	vect_a = v3_init(1, 2, 3);
+	vect_b = v3_init(4, 5, 6);
+	vectres = v3_cross(vect_a, vect_b);
+	printv3(vectres);
+	printf("vecta vectb dot: %f\n", v3_dot(vect_a, vect_b));
+	printf("vecta angle: %f\n", v3_angle(vect_a));
+	printf("X<: %f\n", v3_angle_axis(vect_a, axis_x));
+	printf("Y<: %f\n", v3_angle_axis(vect_a, axis_y));
+	printf("Z<: %f\n", v3_angle_axis(vect_a, axis_z));
+	vectres = v3_scale(vect_a, vect_b);
 	printv3(vectres);
 }
