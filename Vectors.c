@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   AxisDegrees.c                                      :+:    :+:            */
+/*   Vectors.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: pspijkst <pspijkst@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/01/25 10:38:39 by pspijkst      #+#    #+#                 */
-/*   Updated: 2021/01/26 11:24:11 by pspijkst      ########   odam.nl         */
+/*   Updated: 2021/01/26 11:35:38 by pspijkst      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include <stdio.h>
+
 #define PI 3.14159265358979323846
 
 typedef enum	e_axis
@@ -95,9 +96,8 @@ t_vector3	v3_scale(t_vector3 vect_a, t_vector3 vect_b)
 }
 
 /*
-**	Returns the dot product of 2 vectors.
-**	The dot product represents the angle between 2 vectors.
-**	arccos (scalar a x scalar b) / (magn a x magn b)
+**	Returns the dot product of vect_a and vect_b
+**	The dot product represents the angle between the 2 vectors.
 */
 double		v3_dot(t_vector3 vect_a, t_vector3 vect_b)
 {
@@ -110,6 +110,7 @@ double		v3_dot(t_vector3 vect_a, t_vector3 vect_b)
 }
 
 /*
+**	<--- Not implemented yet! --->
 **	Returns a vector representing 3 angles, over x,y,z axis respectively.
 */
 t_vector3	v3_angles_v3(t_vector3 vect_a, t_vector3 vect_b)
